@@ -27,7 +27,7 @@ $(function() {
         });
 
 
-        /* TODO: Write a test that loops through each feed
+        /* Write a test that loops through each feed
          * in the allFeeds object and ensures it has a URL defined
          * and that the URL is not empty.
          */
@@ -51,7 +51,7 @@ $(function() {
     });
 
 
-        /* TODO: Write a test that loops through each feed
+        /* Write a test that loops through each feed
          * in the allFeeds object and ensures it has a name defined
          * and that the name is not empty.
          */
@@ -80,12 +80,11 @@ $(function() {
                 expect(body.hasClass('menu-hidden')).toBe(true);
             });
             it('changes visibility when the menu link is clicked', function() {
-                var currentClass = body.attr('class');
-                expectedNewClass = (body.hasClass('menu-hidden')) ? '' : 'menu-hidden';
+                if (!body.hasClass('menu-hidden')) {body.addClass('menu-hidden')};
                 menuIcon.click();
-                expect(body.attr('class')).toBe(expectedNewClass);
+                expect(body.hasClass('menu-hidden')).toBe(false);
                 menuIcon.click();
-                expect(body.attr('class')).toBe(currentClass);
+                expect(body.hasClass('menu-hidden')).toBe(true);
             });
         });
     /* TODO: Write a new test suite named "Initial Entries" */
@@ -98,16 +97,13 @@ $(function() {
          */
     describe('Initial entries', function() {
         beforeEach(function(done) {
-            loadFeed(0, function() {
-                done();
-            });
+            loadFeed(0, done);
         });
 
-        it('have at least one entry', function(done) {
+        it('have at least one entry', function() {
             var numEntries = $('.feed .entry').length;
             console.log(numEntries);
             expect(numEntries).toBeGreaterThan(0);
-            done();
         });
     });
 
@@ -120,13 +116,12 @@ $(function() {
          */
 
     describe('New feed selection', function() {
-        var currentContent;
+        var currentContent, newContent;
 
         beforeEach(function(done) {
-            currentContent = $('.feed').html();
-            loadFeed(1, function() {
-                done();
-            });
+            loadFeed(0);
+            var currentContent = $('.feed').html();
+            loadFeed(1, done);
         });
 
         it('changes the content displayed', function(done) {
